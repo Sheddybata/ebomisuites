@@ -34,6 +34,5 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# large videos (exceed GitHub 100MB limit — hero-video uses Git LFS)
-/public/intro-1.mp4
+# large videos (exceed GitHub 100MB limit — use Git LFS where needed)
 /public/experienceebomi/*.mp4
