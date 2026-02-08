@@ -582,10 +582,10 @@ export default function Home() {
             loop
             muted
             playsInline
-            preload="metadata"
+            preload="auto"
             className={cn(
-              "absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 opacity-10",
-              bookingVideoLoaded ? "opacity-100" : "opacity-0"
+              "absolute inset-0 w-full h-full object-cover transition-opacity duration-1000",
+              bookingVideoLoaded ? "opacity-100" : "opacity-30"
             )}
             aria-label="EBOMI Suites Booking Video"
             poster="/ebomilogo.jpg"
