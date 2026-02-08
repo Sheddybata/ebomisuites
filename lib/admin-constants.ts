@@ -1,7 +1,7 @@
 export const ROOM_LABELS: Record<string, string> = {
-  deluxe: 'Deluxe',
-  executive: 'Executive',
-  presidential: 'Presidential',
+  studio: 'Studio Room',
+  executive: 'Executive Suite',
+  vip: 'VIP Suite',
 }
 
 export const STATUS_LABELS: Record<string, string> = {

@@ -25,6 +25,7 @@ export default function Footer() {
 
   const quickLinks = [
     { label: t("nav.accommodations"), href: "#accommodations", key: "accommodations" },
+    { label: t("nav.halls"), href: "#halls", key: "halls" },
     { label: t("nav.amenities"), href: "#amenities", key: "amenities" },
     { label: t("nav.gallery"), href: "#gallery", key: "gallery" },
     { label: t("nav.contact"), href: "#contact", key: "contact" },

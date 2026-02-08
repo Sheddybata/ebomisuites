@@ -15,9 +15,9 @@ interface BookingModalProps {
 
 // Room pricing (in Naira)
 const ROOM_PRICES: Record<string, number> = {
-  deluxe: 25000,
-  executive: 45000,
-  presidential: 85000,
+  studio: 10000,
+  executive: 12000,
+  vip: 20000,
 }
 
 export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
@@ -337,9 +337,9 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                     aria-label={t("booking.form.roomType")}
                   >
                     <option value="">{t("booking.form.selectRoom")}</option>
-                    <option value="deluxe">{t("room.deluxe.title")}</option>
+                    <option value="studio">{t("room.studio.title")}</option>
                     <option value="executive">{t("room.executive.title")}</option>
-                    <option value="presidential">{t("room.presidential.title")}</option>
+                    <option value="vip">{t("room.vip.title")}</option>
                   </select>
                   {errors.roomType && (
                     <p className="mt-1.5 text-sm text-red-600 font-medium">{errors.roomType}</p>

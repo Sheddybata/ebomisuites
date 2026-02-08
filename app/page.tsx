@@ -26,6 +26,7 @@ export default function Home() {
   const [bookingVideoError, setBookingVideoError] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
   const bookingVideoRef = useRef<HTMLVideoElement>(null)
+  const bookingSectionRef = useRef<HTMLElement>(null)
   const heroRef = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll()
   
@@ -86,6 +87,26 @@ export default function Home() {
       bookingVideo.removeEventListener('error', handleError)
       bookingVideo.removeEventListener('loadeddata', handleLoadedData)
     }
+  }, [])
+
+  // Play booking video when section scrolls into view (browsers block off-screen autoplay)
+  useEffect(() => {
+    const section = bookingSectionRef.current
+    const video = bookingVideoRef.current
+    if (!section || !video) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            video.play().catch(() => {})
+          }
+        })
+      },
+      { threshold: 0.25, rootMargin: "50px" }
+    )
+    observer.observe(section)
+    return () => observer.disconnect()
   }, [])
 
   const roomTypes = [
@@ -640,6 +661,7 @@ export default function Home() {
 
       {/* Booking Section */}
       <section
+        ref={bookingSectionRef}
         id="booking-section"
         className="py-20 md:py-32 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 relative overflow-hidden scroll-mt-20"
       >

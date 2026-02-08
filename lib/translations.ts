@@ -4,6 +4,7 @@ export const translations: Record<Language, Record<string, string>> = {
   en: {
     // Navigation
     'nav.accommodations': 'Accommodations',
+    'nav.halls': 'Halls & Venues',
     'nav.amenities': 'Amenities',
     'nav.gallery': 'Gallery',
     'nav.contact': 'Contact',
@@ -32,13 +33,24 @@ export const translations: Record<Language, Record<string, string>> = {
     'section.contact.subtitle': 'Our concierge team is available 24/7 to assist with your inquiries and reservations.',
     
     // Room Types
+    'room.studio.title': 'Studio Room',
+    'room.studio.desc': 'Comfortable and modern space for a restful stay',
     'room.executive.title': 'Executive Suite',
     'room.executive.desc': 'Spacious elegance with panoramic city views',
-    'room.presidential.title': 'Presidential Suite',
-    'room.presidential.desc': 'Ultimate luxury with private terrace and butler service',
-    'room.deluxe.title': 'Deluxe Room',
-    'room.deluxe.desc': 'Refined comfort in the heart of the city',
+    'room.vip.title': 'VIP Suite',
+    'room.vip.desc': 'Ultimate luxury with premium amenities',
     'room.learnMore': 'Learn More',
+    // Halls & Venues
+    'section.halls.title': 'Halls & Venues',
+    'section.halls.subtitle': 'Board rooms and event halls for corporate meetings, conferences, and special occasions.',
+    'hall.boardRoom.name': 'Board Room (Corporate Meeting)',
+    'hall.rapha.name': 'Rapha Hall',
+    'hall.yaweh.name': 'Yaweh Hall',
+    'hall.uriel.name': 'Uriel Hall',
+    'hall.hallelujah.name': 'Hallelujah Hall',
+    'hall.premises.name': 'Premises',
+    'hall.capacity': 'Capacity',
+    'hall.perEvent': 'per event',
     
     // Amenities
     'amenity.concierge.title': '24/7 Concierge',

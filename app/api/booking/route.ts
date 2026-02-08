@@ -2,9 +2,9 @@ import { NextRequest, NextResponse } from 'next/server'
 
 // Room pricing (in Naira)
 const ROOM_PRICES: Record<string, number> = {
-  deluxe: 25000,
-  executive: 45000,
-  presidential: 85000,
+  studio: 10000,
+  executive: 12000,
+  vip: 20000,
 }
 
 export async function POST(request: NextRequest) {
@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Calculate total amount
-    const roomPrice = ROOM_PRICES[roomType] || ROOM_PRICES.deluxe
+    const roomPrice = ROOM_PRICES[roomType] || ROOM_PRICES.studio
     const subtotal = roomPrice * nights
     const tax = subtotal * 0.05 // 5% tax
     const total = subtotal + tax
