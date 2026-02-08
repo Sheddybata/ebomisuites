@@ -130,13 +130,14 @@ export default function Home() {
     },
   ]
 
+  // African corporate board rooms & African-style event halls (Ninthgrid Lagos, Pexels/Nigerian context, event halls)
   const hallVenues = [
-    { id: "1", nameKey: "hall.boardRoom.name", price: 20000, capacity: 20, image: "https://images.unsplash.com/photo-1560439514-4e9645039924?w=800&q=80" },
-    { id: "2", nameKey: "hall.rapha.name", price: 50000, capacity: 50, image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&q=80" },
-    { id: "3", nameKey: "hall.yaweh.name", price: 50000, capacity: 70, image: "https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=800&q=80" },
-    { id: "4", nameKey: "hall.uriel.name", price: 70000, capacity: 70, image: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=800&q=80" },
-    { id: "5", nameKey: "hall.hallelujah.name", price: 100000, capacity: 300, image: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=800&q=80" },
-    { id: "6", nameKey: "hall.premises.name", price: 50000, capacity: 500, image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&q=80" },
+    { id: "1", nameKey: "hall.boardRoom.name", price: 20000, capacity: 20, image: "https://images.unsplash.com/photo-1739298061740-5ed03045b280?w=800&q=80" }, // Lagos, Nigeria – boardroom (Ninthgrid)
+    { id: "2", nameKey: "hall.rapha.name", price: 50000, capacity: 50, image: "https://images.pexels.com/photos/30677710/pexels-photo-30677710.jpeg?auto=compress&cs=tinysrgb&w=800" }, // Professional business meeting, Lagos office (Ninthgrid)
+    { id: "3", nameKey: "hall.yaweh.name", price: 50000, capacity: 70, image: "https://images.pexels.com/photos/4331578/pexels-photo-4331578.jpeg?auto=compress&cs=tinysrgb&w=800" }, // Conference hall
+    { id: "4", nameKey: "hall.uriel.name", price: 70000, capacity: 70, image: "https://images.pexels.com/photos/30678212/pexels-photo-30678212.jpeg?auto=compress&cs=tinysrgb&w=800" }, // Professional team, Lagos office (Ninthgrid)
+    { id: "5", nameKey: "hall.hallelujah.name", price: 100000, capacity: 300, image: "https://images.pexels.com/photos/18824346/pexels-photo-18824346.jpeg?auto=compress&cs=tinysrgb&w=800" }, // Speaker & auditorium – event hall
+    { id: "6", nameKey: "hall.premises.name", price: 50000, capacity: 500, image: "https://images.pexels.com/photos/6479596/pexels-photo-6479596.jpeg?auto=compress&cs=tinysrgb&w=800" }, // Banquet / event space
   ]
 
   const amenities = [
@@ -699,7 +700,7 @@ export default function Home() {
             aria-label="EBOMI Suites Booking Video"
             poster="/ebomilogo.jpg"
           >
-            <source src="/intro-1.mp4" type="video/mp4" />
+            <source src="/reserveyourstay.mp4" type="video/mp4" />
           </video>
 
           {/* Fallback - shown if video fails to load */}
@@ -785,19 +786,19 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
             {[
               {
-                name: "Sarah Mitchell",
+                name: "Xavier Raphael",
                 role: "Business Executive",
                 content: "An exceptional experience from start to finish. The attention to detail and personalized service exceeded all expectations.",
                 rating: 5,
               },
               {
-                name: "James Anderson",
+                name: "Tony Young",
                 role: "Travel Enthusiast",
                 content: "The epitome of quiet luxury. Every moment was thoughtfully curated, and the accommodations were simply breathtaking.",
                 rating: 5,
               },
               {
-                name: "Emily Chen",
+                name: "Bata Shedrack",
                 role: "Luxury Traveler",
                 content: "EBOMI Suites redefines hospitality. The seamless blend of modern elegance and timeless sophistication is unmatched.",
                 rating: 5,

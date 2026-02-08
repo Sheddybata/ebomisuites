@@ -27,7 +27,7 @@ const nextConfig = {
         ],
       },
       {
-        source: '/intro-1.mp4',
+        source: '/reserveyourstay.mp4',
         headers: [
           {
             key: 'Cache-Control',
