@@ -57,6 +57,10 @@ export default function Home() {
 
     const handleCanPlay = () => {
       setBookingVideoLoaded(true)
+      bookingVideo.play().catch(() => {
+        // Autoplay failed, but video is ready
+        setBookingVideoLoaded(true)
+      })
     }
 
     const handleError = () => {
@@ -65,12 +69,17 @@ export default function Home() {
     }
 
     const handleLoadedData = () => {
-      setBookingVideoLoaded(true)
+      if (bookingVideo.readyState >= 2) {
+        setBookingVideoLoaded(true)
+      }
     }
 
     bookingVideo.addEventListener('canplay', handleCanPlay)
     bookingVideo.addEventListener('error', handleError)
     bookingVideo.addEventListener('loadeddata', handleLoadedData)
+
+    // Force video to start loading
+    bookingVideo.load()
 
     return () => {
       bookingVideo.removeEventListener('canplay', handleCanPlay)
@@ -82,22 +91,31 @@ export default function Home() {
   const roomTypes = [
     {
       id: "1",
+      title: t("room.studio.title"),
+      description: t("room.studio.desc"),
+      image: "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&q=80",
+    },
+    {
+      id: "2",
       title: t("room.executive.title"),
       description: t("room.executive.desc"),
       image: "https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800&q=80",
     },
     {
-      id: "2",
-      title: t("room.presidential.title"),
-      description: t("room.presidential.desc"),
+      id: "3",
+      title: t("room.vip.title"),
+      description: t("room.vip.desc"),
       image: "https://images.unsplash.com/photo-1590490360182-c33d57733427?w=800&q=80",
     },
-    {
-      id: "3",
-      title: t("room.deluxe.title"),
-      description: t("room.deluxe.desc"),
-      image: "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&q=80",
-    },
+  ]
+
+  const hallVenues = [
+    { id: "1", nameKey: "hall.boardRoom.name", price: 20000, capacity: 20, image: "https://images.unsplash.com/photo-1560439514-4e9645039924?w=800&q=80" },
+    { id: "2", nameKey: "hall.rapha.name", price: 50000, capacity: 50, image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&q=80" },
+    { id: "3", nameKey: "hall.yaweh.name", price: 50000, capacity: 70, image: "https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=800&q=80" },
+    { id: "4", nameKey: "hall.uriel.name", price: 70000, capacity: 70, image: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=800&q=80" },
+    { id: "5", nameKey: "hall.hallelujah.name", price: 100000, capacity: 300, image: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=800&q=80" },
+    { id: "6", nameKey: "hall.premises.name", price: 50000, capacity: 500, image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&q=80" },
   ]
 
   const amenities = [
@@ -265,7 +283,7 @@ export default function Home() {
               poster="/ebomilogo.jpg"
             >
               {/* Primary H.264 source - best compatibility */}
-              <source src="/hero-video.mp4" type="video/mp4" />
+              <source src="/heroslideshow/0204.mp4" type="video/mp4" />
             </video>
 
             {/* Fallback - shown if video fails to load */}
@@ -412,6 +430,75 @@ export default function Home() {
                       {t("room.learnMore")}
                       <ArrowRight className="w-4 h-4" aria-hidden="true" />
                     </button>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* Halls & Venues Section */}
+      <section id="halls" className="py-20 md:py-32 bg-gray-50 scroll-mt-20">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-4xl md:text-5xl font-serif font-light text-gray-900 mb-4">
+              {t("section.halls.title")}
+            </h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              {t("section.halls.subtitle")}
+            </p>
+          </motion.div>
+
+          {isMobile ? (
+            <SwipeCarousel
+              items={hallVenues.map((hall) => ({
+                id: hall.id,
+                title: t(hall.nameKey),
+                content: (
+                  <div className="relative h-[400px] rounded-2xl overflow-hidden group">
+                    <div
+                      className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                      style={{ backgroundImage: `url(${hall.image})` }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+                    <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                      <h3 className="text-2xl font-serif mb-2">{t(hall.nameKey)}</h3>
+                      <p className="text-white/80">
+                        {t("hall.capacity")}: {hall.capacity} · ₦{hall.price.toLocaleString()} {t("hall.perEvent")}
+                      </p>
+                    </div>
+                  </div>
+                ),
+              }))}
+            />
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {hallVenues.map((hall, index) => (
+                <motion.div
+                  key={hall.id}
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: index * 0.08 }}
+                  className="relative h-[380px] rounded-2xl overflow-hidden group cursor-pointer"
+                >
+                  <div
+                    className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                    style={{ backgroundImage: `url(${hall.image})` }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                    <h3 className="text-2xl font-serif mb-2">{t(hall.nameKey)}</h3>
+                    <p className="text-white/80">
+                      {t("hall.capacity")}: {hall.capacity} · ₦{hall.price.toLocaleString()} {t("hall.perEvent")}
+                    </p>
                   </div>
                 </motion.div>
               ))}

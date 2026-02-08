@@ -1,2 +1,1 @@
-# Hero video only (205MB - exceeds GitHub 100MB limit)
-public/hero-video.mp4 filter=lfs diff=lfs merge=lfs -text
+# Videos are under 100MB - no LFS needed
