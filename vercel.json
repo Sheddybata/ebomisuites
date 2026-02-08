@@ -1,5 +1,5 @@
 {
   "framework": "nextjs",
   "buildCommand": "npm run build",
-  "installCommand": "git lfs install --local && git lfs pull origin && npm install"
+  "installCommand": "npm install"
 }
