@@ -115,18 +115,21 @@ export default function Home() {
       title: t("room.studio.title"),
       description: t("room.studio.desc"),
       image: "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&q=80",
+      price: 10000,
     },
     {
       id: "2",
       title: t("room.executive.title"),
       description: t("room.executive.desc"),
       image: "https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800&q=80",
+      price: 12000,
     },
     {
       id: "3",
       title: t("room.vip.title"),
       description: t("room.vip.desc"),
       image: "https://images.unsplash.com/photo-1590490360182-c33d57733427?w=800&q=80",
+      price: 20000,
     },
   ]
 
@@ -423,7 +426,8 @@ export default function Home() {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
                     <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
                       <h3 className="text-2xl font-serif mb-2">{room.title}</h3>
-                      <p className="text-white/80">{room.description}</p>
+                      <p className="text-white/80 mb-2">{room.description}</p>
+                      <p className="text-secondary font-medium">₦{room.price.toLocaleString()} {t("room.perNight")}</p>
                     </div>
                   </div>
                 ),
@@ -448,10 +452,7 @@ export default function Home() {
                   <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
                     <h3 className="text-3xl font-serif mb-2">{room.title}</h3>
                     <p className="text-white/80 mb-4">{room.description}</p>
-                    <button className="text-secondary hover:text-secondary/80 transition-colors flex items-center gap-2" aria-label={`${t("room.learnMore")} ${room.title}`}>
-                      {t("room.learnMore")}
-                      <ArrowRight className="w-4 h-4" aria-hidden="true" />
-                    </button>
+                    <p className="text-secondary font-semibold text-lg">₦{room.price.toLocaleString()} {t("room.perNight")}</p>
                   </div>
                 </motion.div>
               ))}
