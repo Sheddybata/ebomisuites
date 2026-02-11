@@ -11,6 +11,7 @@ import { cn } from "@/lib/utils"
 interface BookingModalProps {
   isOpen: boolean
   onClose: () => void
+  initialRoomType?: string
 }
 
 // Room pricing (in Naira)
@@ -20,13 +21,13 @@ const ROOM_PRICES: Record<string, number> = {
   vip: 20000,
 }
 
-export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
+export default function BookingModal({ isOpen, onClose, initialRoomType }: BookingModalProps) {
   const { t } = useLanguage()
   const { showToast } = useToast()
   const [formData, setFormData] = useState({
     checkIn: "",
     checkOut: "",
-    guests: "2",
+    guests: "1",
     roomType: "",
     name: "",
     email: "",
@@ -37,6 +38,13 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
 
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [errors, setErrors] = useState<Record<string, string>>({})
+
+  // Pre-fill room type when opened from a room card
+  useEffect(() => {
+    if (isOpen && initialRoomType) {
+      setFormData((prev) => ({ ...prev, roomType: initialRoomType }))
+    }
+  }, [isOpen, initialRoomType])
 
   // Calculate booking amount
   const bookingAmount = useMemo(() => {
@@ -65,8 +73,14 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
 
     if (!formData.checkIn) {
       newErrors.checkIn = t("booking.validation.checkInRequired")
-    } else if (new Date(formData.checkIn) < new Date()) {
-      newErrors.checkIn = t("booking.validation.checkInFuture")
+    } else {
+      const checkInDate = new Date(formData.checkIn)
+      checkInDate.setHours(0, 0, 0, 0)
+      const today = new Date()
+      today.setHours(0, 0, 0, 0)
+      if (checkInDate < today) {
+        newErrors.checkIn = t("booking.validation.checkInFuture")
+      }
     }
 
     if (!formData.checkOut) {
@@ -177,7 +191,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
       setFormData({
         checkIn: "",
         checkOut: "",
-        guests: "2",
+        guests: "1",
         roomType: "",
         name: "",
         email: "",

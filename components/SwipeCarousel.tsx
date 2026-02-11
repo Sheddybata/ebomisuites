@@ -13,13 +13,34 @@ interface SwipeCarouselProps {
     content: React.ReactNode
   }>
   className?: string
+  autoPlay?: boolean
+  autoPlayInterval?: number
 }
 
-export default function SwipeCarousel({ items, className }: SwipeCarouselProps) {
+export default function SwipeCarousel({ 
+  items, 
+  className,
+  autoPlay = true,
+  autoPlayInterval = 4000 
+}: SwipeCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isDragging, setIsDragging] = useState(false)
+  const [isPaused, setIsPaused] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
   const constraintsRef = useRef<HTMLDivElement>(null)
+  const autoPlayTimerRef = useRef<NodeJS.Timeout | null>(null)
+  const pauseTimerRef = useRef<NodeJS.Timeout | null>(null)
   const x = useMotionValue(0)
+
+  // Check if mobile on mount and resize
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    checkMobile()
+    window.addEventListener("resize", checkMobile)
+    return () => window.removeEventListener("resize", checkMobile)
+  }, [])
 
   const handleDragEnd = (_: any, info: PanInfo) => {
     const threshold = 50
@@ -31,9 +52,57 @@ export default function SwipeCarousel({ items, className }: SwipeCarouselProps) 
     x.set(0)
   }
 
+  const goToNext = () => {
+    setCurrentIndex((prev) => (prev + 1) % items.length)
+  }
+
+  const pauseAutoPlay = () => {
+    setIsPaused(true)
+    if (autoPlayTimerRef.current) {
+      clearInterval(autoPlayTimerRef.current)
+      autoPlayTimerRef.current = null
+    }
+    // Resume after 5 seconds of no interaction
+    if (pauseTimerRef.current) {
+      clearTimeout(pauseTimerRef.current)
+    }
+    pauseTimerRef.current = setTimeout(() => {
+      setIsPaused(false)
+    }, 5000)
+  }
+
   useEffect(() => {
     x.set(-currentIndex * 100)
   }, [currentIndex, x])
+
+  // Auto-play functionality (mobile only)
+  useEffect(() => {
+    if (!autoPlay || !isMobile || isPaused || isDragging || items.length <= 1) {
+      return
+    }
+
+    autoPlayTimerRef.current = setInterval(() => {
+      goToNext()
+    }, autoPlayInterval)
+
+    return () => {
+      if (autoPlayTimerRef.current) {
+        clearInterval(autoPlayTimerRef.current)
+      }
+    }
+  }, [autoPlay, isMobile, isPaused, isDragging, items.length, autoPlayInterval])
+
+  // Cleanup timers on unmount
+  useEffect(() => {
+    return () => {
+      if (autoPlayTimerRef.current) {
+        clearInterval(autoPlayTimerRef.current)
+      }
+      if (pauseTimerRef.current) {
+        clearTimeout(pauseTimerRef.current)
+      }
+    }
+  }, [])
 
   return (
     <div className={className} ref={constraintsRef}>
@@ -44,7 +113,10 @@ export default function SwipeCarousel({ items, className }: SwipeCarouselProps) 
           drag="x"
           dragConstraints={constraintsRef}
           dragElastic={0.2}
-          onDragStart={() => setIsDragging(true)}
+          onDragStart={() => {
+            setIsDragging(true)
+            pauseAutoPlay()
+          }}
           onDragEnd={(e, info) => {
             handleDragEnd(e, info)
             setIsDragging(false)
@@ -74,7 +146,10 @@ export default function SwipeCarousel({ items, className }: SwipeCarouselProps) 
           {items.map((_, index) => (
             <button
               key={index}
-              onClick={() => setCurrentIndex(index)}
+              onClick={() => {
+                setCurrentIndex(index)
+                pauseAutoPlay()
+              }}
               className={`h-2 rounded-full transition-all duration-300 ${
                 index === currentIndex
                   ? "w-8 bg-primary"
@@ -88,7 +163,10 @@ export default function SwipeCarousel({ items, className }: SwipeCarouselProps) 
         {/* Arrow Navigation (Desktop) */}
         {currentIndex > 0 && (
           <button
-            onClick={() => setCurrentIndex(currentIndex - 1)}
+            onClick={() => {
+              setCurrentIndex(currentIndex - 1)
+              pauseAutoPlay()
+            }}
             className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 z-10 p-2 rounded-full bg-white/80 backdrop-blur-sm shadow-lg hover:bg-white transition-colors"
             aria-label="Previous slide"
           >
@@ -97,7 +175,10 @@ export default function SwipeCarousel({ items, className }: SwipeCarouselProps) 
         )}
         {currentIndex < items.length - 1 && (
           <button
-            onClick={() => setCurrentIndex(currentIndex + 1)}
+            onClick={() => {
+              setCurrentIndex(currentIndex + 1)
+              pauseAutoPlay()
+            }}
             className="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 z-10 p-2 rounded-full bg-white/80 backdrop-blur-sm shadow-lg hover:bg-white transition-colors"
             aria-label="Next slide"
           >

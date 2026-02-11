@@ -240,9 +240,13 @@ export default function AdminDashboardClient({ bookings }: { bookings: Booking[]
       {sorted.length === 0 ? (
         <div className="bg-white rounded-2xl border border-gray-200 p-12 text-center">
           <Users className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-          <h2 className="font-serif text-lg text-gray-900 mb-1">No bookings match</h2>
+          <h2 className="font-serif text-lg text-gray-900 mb-1">
+            {bookings.length === 0 ? 'No bookings yet' : 'No bookings match'}
+          </h2>
           <p className="text-sm text-gray-600 max-w-sm mx-auto">
-            Try changing the search or filter to see more results.
+            {bookings.length === 0
+              ? 'Bookings will appear here when guests make reservations.'
+              : 'Try changing the search or filter to see more results.'}
           </p>
         </div>
       ) : (

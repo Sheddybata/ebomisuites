@@ -1,7 +1,7 @@
 import { redirect, notFound } from 'next/navigation'
 import Link from 'next/link'
 import { getAdminSession } from '@/lib/admin-auth'
-import { getMockBookingById } from '@/lib/admin-mock-data'
+import { getBookingById } from '@/lib/supabase-bookings'
 import { ROOM_LABELS, STATUS_LABELS, STATUS_STYLES, formatDate } from '@/lib/admin-constants'
 import UpdateStatusForm from './UpdateStatusForm'
 
@@ -14,7 +14,7 @@ export default async function AdminBookingDetailPage({
   if (!session) redirect('/admin/login')
 
   const { id } = await params
-  const b = getMockBookingById(id)
+  const b = await getBookingById(id)
   if (!b) notFound()
 
   return (

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { updateBookingStatusByRef } from '@/lib/supabase-bookings'
 
 export const dynamic = 'force-dynamic'
 
@@ -40,6 +41,11 @@ export async function GET(request: NextRequest) {
     }
 
     const bookingRef = data.data.metadata?.custom_fields?.find((f: { variable_name: string }) => f.variable_name === 'booking_ref')?.value
+
+    // On successful payment, update booking status to 'paid' in Supabase
+    if (data.data.status === 'success' && bookingRef) {
+      await updateBookingStatusByRef(bookingRef, 'paid')
+    }
 
     return NextResponse.json({
       success: data.data.status === 'success',

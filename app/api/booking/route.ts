@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { insertBooking } from '@/lib/supabase-bookings'
 
 // Room pricing (in Naira)
 const ROOM_PRICES: Record<string, number> = {
@@ -42,10 +43,29 @@ export async function POST(request: NextRequest) {
     const bookingRef = `EBOMI-${Date.now()}-${Math.random().toString(36).substr(2, 6).toUpperCase()}`
     const status = paymentMethod === 'paystack' ? 'pending_payment' : 'pending_confirmation'
     const guestsNum = typeof guests === 'number' ? guests : parseInt(String(guests), 10) || 1
-    const now = new Date().toISOString()
 
+    // Insert into Supabase if configured
+    const inserted = await insertBooking({
+      booking_ref: bookingRef,
+      check_in: checkIn,
+      check_out: checkOut,
+      nights,
+      room_type: roomType,
+      guests: guestsNum,
+      name: String(name).trim(),
+      email: String(email).trim(),
+      phone: String(phone).trim(),
+      special_requests: specialRequests || null,
+      subtotal,
+      tax,
+      total,
+      payment_method: (paymentMethod || 'manual') as 'manual' | 'paystack',
+      status,
+    })
+
+    const bookingId = inserted?.id ?? `temp-${Date.now()}`
     const bookingData = {
-      id: `temp-${Date.now()}`,
+      id: bookingId,
       bookingRef,
       checkIn,
       checkOut,
@@ -61,7 +81,6 @@ export async function POST(request: NextRequest) {
       total,
       paymentMethod: paymentMethod || 'manual',
       status,
-      createdAt: now,
     }
 
     if (paymentMethod === 'paystack') {

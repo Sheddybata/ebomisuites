@@ -105,7 +105,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'booking.form.paymentPaystackComingSoon': 'Coming soon',
     'booking.form.paymentPaystackUnavailable': 'Online payment is not available yet. Please use Pay on Arrival or contact us.',
     'booking.validation.checkInRequired': 'Check-in date is required',
-    'booking.validation.checkInFuture': 'Check-in date must be in the future',
+    'booking.validation.checkInFuture': 'Check-in date cannot be in the past',
     'booking.validation.checkOutRequired': 'Check-out date is required',
     'booking.validation.checkOutAfter': 'Check-out date must be after check-in date',
     'booking.validation.nameRequired': 'Name is required',

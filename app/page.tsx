@@ -109,29 +109,18 @@ export default function Home() {
     return () => observer.disconnect()
   }, [])
 
+  const [bookingModalRoomType, setBookingModalRoomType] = useState<string | null>(null)
+
   const roomTypes = [
-    {
-      id: "1",
-      title: t("room.studio.title"),
-      description: t("room.studio.desc"),
-      image: "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&q=80",
-      price: 10000,
-    },
-    {
-      id: "2",
-      title: t("room.executive.title"),
-      description: t("room.executive.desc"),
-      image: "https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800&q=80",
-      price: 12000,
-    },
-    {
-      id: "3",
-      title: t("room.vip.title"),
-      description: t("room.vip.desc"),
-      image: "https://images.unsplash.com/photo-1590490360182-c33d57733427?w=800&q=80",
-      price: 20000,
-    },
+    { id: "1", roomType: "studio", title: t("room.studio.title"), description: t("room.studio.desc"), image: "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&q=80", price: 10000 },
+    { id: "2", roomType: "executive", title: t("room.executive.title"), description: t("room.executive.desc"), image: "https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800&q=80", price: 12000 },
+    { id: "3", roomType: "vip", title: t("room.vip.title"), description: t("room.vip.desc"), image: "https://images.unsplash.com/photo-1590490360182-c33d57733427?w=800&q=80", price: 20000 },
   ]
+
+  const openBookingModal = (roomType?: string) => {
+    setBookingModalRoomType(roomType ?? null)
+    setIsBookingModalOpen(true)
+  }
 
   // African corporate board rooms & African-style event halls (Ninthgrid Lagos, Pexels/Nigerian context, event halls)
   const hallVenues = [
@@ -418,7 +407,13 @@ export default function Home() {
                 title: room.title,
                 description: room.description,
                 content: (
-                  <div className="relative h-[400px] rounded-2xl overflow-hidden group">
+                  <div
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => openBookingModal(room.roomType)}
+                    onKeyDown={(e) => e.key === "Enter" && openBookingModal(room.roomType)}
+                    className="relative h-[400px] rounded-2xl overflow-hidden group cursor-pointer"
+                  >
                     <div
                       className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
                       style={{ backgroundImage: `url(${room.image})` }}
@@ -442,6 +437,10 @@ export default function Home() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
+                  onClick={() => openBookingModal(room.roomType)}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => e.key === "Enter" && openBookingModal(room.roomType)}
                   className="relative h-[500px] rounded-2xl overflow-hidden group cursor-pointer"
                 >
                   <div
@@ -485,7 +484,13 @@ export default function Home() {
                 id: hall.id,
                 title: t(hall.nameKey),
                 content: (
-                  <div className="relative h-[400px] rounded-2xl overflow-hidden group">
+                  <div
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => openBookingModal()}
+                    onKeyDown={(e) => e.key === "Enter" && openBookingModal()}
+                    className="relative h-[400px] rounded-2xl overflow-hidden group cursor-pointer"
+                  >
                     <div
                       className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
                       style={{ backgroundImage: `url(${hall.image})` }}
@@ -510,6 +515,10 @@ export default function Home() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: index * 0.08 }}
+                  onClick={() => openBookingModal()}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => e.key === "Enter" && openBookingModal()}
                   className="relative h-[380px] rounded-2xl overflow-hidden group cursor-pointer"
                 >
                   <div
@@ -944,7 +953,8 @@ export default function Home() {
       {/* Booking Modal */}
       <BookingModal
         isOpen={isBookingModalOpen}
-        onClose={() => setIsBookingModalOpen(false)}
+        onClose={() => { setIsBookingModalOpen(false); setBookingModalRoomType(null) }}
+        initialRoomType={bookingModalRoomType ?? undefined}
       />
 
       {/* Video Modal */}
