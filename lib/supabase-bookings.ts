@@ -78,25 +78,25 @@ export async function insertBooking(input: InsertBookingInput): Promise<{ id: st
   const supabase = getSupabaseAdmin()
   if (!supabase) return null
 
-  const { data, error } = await supabase
-    .from('bookings')
-    .insert({
-      booking_ref: input.booking_ref,
-      check_in: input.check_in,
-      check_out: input.check_out,
-      nights: input.nights,
-      room_type: input.room_type,
-      guests: input.guests,
-      name: input.name,
-      email: input.email,
-      phone: input.phone,
-      special_requests: input.special_requests,
-      subtotal: input.subtotal,
-      tax: input.tax,
-      total: input.total,
-      payment_method: input.payment_method,
-      status: input.status,
-    })
+  const row = {
+    booking_ref: input.booking_ref,
+    check_in: input.check_in,
+    check_out: input.check_out,
+    nights: input.nights,
+    room_type: input.room_type,
+    guests: input.guests,
+    name: input.name,
+    email: input.email,
+    phone: input.phone,
+    special_requests: input.special_requests,
+    subtotal: input.subtotal,
+    tax: input.tax,
+    total: input.total,
+    payment_method: input.payment_method,
+    status: input.status,
+  }
+
+  const { data, error } = await supabase.from('bookings').insert(row as Record<string, unknown>)
     .select('id')
     .single()
 
